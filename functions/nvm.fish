@@ -41,34 +41,15 @@ function nvm --argument-names cmd v --description "Node version manager"
             if test ! -e $nvm_data/$v
                 set --local os (command uname -s | string lower)
                 set --local ext tar.gz
-                set --local arch (command uname -m)
 
                 switch $os
-                    case aix
-                        set arch ppc64
-                    case sunos
-                    case linux
                     case darwin
-                    case {MSYS_NT,MINGW\*_NT}\*
-                        set os win
-                        set ext zip
                     case \*
                         echo "nvm: Unsupported operating system: \"$os\"" >&2
                         return 1
                 end
 
-                switch $arch
-                    case i\*86
-                        set arch x86
-                    case x86_64
-                        set arch x64
-                    case armv6 armv6l
-                        set arch armv6l
-                    case armv7 armv7l
-                        set arch armv7l
-                    case armv8 armv8l aarch64
-                        set arch arm64
-                end
+                set arch x64
 
                 set --local dir "node-$v-$os-$arch"
                 set --local url $nvm_mirror/$v/$dir.$ext
